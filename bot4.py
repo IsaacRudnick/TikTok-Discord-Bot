@@ -42,7 +42,7 @@ async def on_ready():
     print(f"Logged in as {client.user.name}")
 
 
-async def handle_photo_slideshow(message, parent_folder: str):
+async def handle_photo_slideshow(message: discord.Message, parent_folder: str):
     """This method will send a message with a link to the photo slideshow. 
     It will then download the HTML of the TikTok link, find the photo URLs,
     download the photos, and send them a thread created from the message the bot sent.
@@ -107,7 +107,7 @@ async def handle_photo_slideshow(message, parent_folder: str):
     await message.delete()
 
 
-async def handle_video(message, parent_folder):
+async def handle_video(message, parent_folder: str):
     """This method will download the video using youtube_dl,
     convert it to libx264 encoding to allow it to be embedded in discord,
     and upload it."""
@@ -180,7 +180,7 @@ async def handle_video(message, parent_folder):
             await message.add_reaction(emojis["error_emoji"])
 
 
-async def handle_link(message):
+async def handle_link(message: discord.Message):
     await message.add_reaction(emojis["wait_emoji"])
 
     # Make the subdirectory for the slideshow/video
@@ -202,7 +202,7 @@ async def handle_link(message):
     shutil.rmtree(parent_folder)
 
 
-async def handle_rescan(message):
+async def handle_rescan(message: discord.Message):
     # Get count of messages to scrape (default 25 + the -rs message itself makes 26)
     components = message.content.split(" ")
     count = (25 if len(components) == 1 else int(components[1])) + 1
@@ -218,7 +218,7 @@ async def handle_rescan(message):
 
 
 @client.event
-async def on_message(message):
+async def on_message(message: discord.Message):
     # Check if the message is from a bot to avoid infinite loop
     if message.author.bot:
         return
