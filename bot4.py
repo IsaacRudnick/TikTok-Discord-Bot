@@ -23,11 +23,13 @@ settings = read_settings()
 # Emoji names
 emojis = {"wait_emoji": "⌛", "too_large_emoji": "📦", "error_emoji": "❌"}
 dir = "downloads/"
+version = "4.1.0"
 
 
 @client.event
 async def on_ready():
     print("\n")  # Add a newline for readability
+    print(f"Starting bot v{version}")
     # Make the downloads folder if it doesn't exist
     if not os.path.exists(dir):
         print(f"Creating {dir} folder")
@@ -102,7 +104,7 @@ async def handle_photo_slideshow(message: discord.Message, parent_folder: str):
         file = discord.File(filepath, spoiler=False)
         await thread.send(file=file)
         # Add a delay between uploads to ensure original order of photos is preserved.
-        await asyncio.sleep(0.5)
+        await asyncio.sleep(1.0)
 
     await message.delete()
 
@@ -141,8 +143,8 @@ async def handle_video(message, parent_folder: str):
                     output_file,
                     {"codec:v": "libx264", "codec:a": "copy"},
                     # vf="scale=1280:-1",
-                    preset="veryslow",
-                    crf=15,
+                    preset="veryslow", #TODO: Write comment w/ all options for this
+                    crf=23, #0 is lossless, 51 is worst quality
                 )
             )
 
@@ -170,15 +172,14 @@ async def handle_video(message, parent_folder: str):
         except Exception as e:
             # raise(e)
             # Log specific errors
-            if "404" in e: 
+            if "404" in str(e):
                 print("Error: 404 (video likely deleted)")
             # Log all other errors generically
             else: 
                 print(f"Error: {e}")
-                
+
             await message.remove_reaction(emojis["wait_emoji"], client.user)
             await message.add_reaction(emojis["error_emoji"])
-
 
 async def handle_link(message: discord.Message):
     await message.add_reaction(emojis["wait_emoji"])
@@ -223,15 +224,23 @@ async def on_message(message: discord.Message):
     if message.author.bot:
         return
 
-    # Check if "tiktok.com" is in the message content
-    if "tiktok.com" in message.content:
-        print(f"Handling link: {message.content}")
-        await handle_link(message)
+    # If the message has "-ns" (No Scan), don't do anything. 
+    # This way people can link a video and not have it embedded.
+    elif "-ns" in message.content:
+        print("Avoiding message")
+        return
 
+    # If the message has "-rs" (Rescan), 
+    # rehandle previous messages as specified by the user or 25 by default
     elif "-rs" in message.content:
         print("Handling rescan")
         await handle_rescan(message)
 
+    # Check if "tiktok.com" is in the message content
+    elif "tiktok.com" in message.content:
+        print(f"Handling link: {message.content}")
+        await handle_link(message)
+        
 
 # Run the bot with your token
 client.run(settings["token"])
