@@ -15,7 +15,7 @@ client = discord.Client(intents=intents)
 
 # Emoji names
 emojis = {"wait_emoji": "⌛", "too_large_emoji": "📦", "error_emoji": "❌"}
-dir = "downloads/"  # The folder where the videos and photos will be downloaded
+download_dir = "downloads/"  # The folder where the videos and photos will be downloaded
 version = "4.1.1"  # The version of the bot
 
 
@@ -24,15 +24,15 @@ async def on_ready():
     print("\n")  # Add a newline for readability
     print(f"Starting bot v{version}")
     # Make the downloads folder if it doesn't exist
-    if not os.path.exists(dir):
-        print(f"Creating {dir} folder")
-        os.mkdir(dir)
+    if not os.path.exists(download_dir):
+        print(f"Creating {download_dir} folder")
+        os.mkdir(download_dir)
 
     # For every subfolder in downloads, delete it
     # There shouldn't be any files here, just folders of files, so we can use shutil.rmtree
-    for folder in os.listdir(dir):
+    for folder in os.listdir(download_dir):
         print(f"Deleting {folder} folder")
-        shutil.rmtree(os.path.join(dir, folder))
+        shutil.rmtree(os.path.join(download_dir, folder))
 
     print(f"Logged in as {client.user.name}")
 
@@ -136,7 +136,7 @@ async def handle_video(message, parent_folder: str):
                     output_file,
                     {"codec:v": "libx264", "codec:a": "copy"},
                     # vf="scale=1280:-1",
-                    preset="veryslow",  # TODO: Write comment w/ all options for this
+                    preset="medium",  # Valid presets are ultrafast, superfast, veryfast, faster, fast, medium, slow, slower, and veryslow
                     crf=23,  # 0 is lossless, 51 is worst quality
                 )
             )
