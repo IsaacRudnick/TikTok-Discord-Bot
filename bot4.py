@@ -69,7 +69,7 @@ async def handle_photo_slideshow(message: discord.Message, parent_folder: str):
         # Might be "i-photomode-tx" or "i-photomode-us" or something else
         start_index = string.find("i-photomode") + len("i-photomode-??")
         end_index = string.find("~")
-        key = string[start_index + 1 : end_index]
+        key = string[start_index + 1: end_index]
         names_and_urls[key] = string
 
     # To keep track of the photos
@@ -143,8 +143,8 @@ async def handle_video(message, parent_folder: str):
                     output_file,
                     {"codec:v": "libx264", "codec:a": "copy"},
                     # vf="scale=1280:-1",
-                    preset="veryslow", #TODO: Write comment w/ all options for this
-                    crf=23, #0 is lossless, 51 is worst quality
+                    preset="veryslow",  # TODO: Write comment w/ all options for this
+                    crf=23,  # 0 is lossless, 51 is worst quality
                 )
             )
 
@@ -175,11 +175,12 @@ async def handle_video(message, parent_folder: str):
             if "404" in str(e):
                 print("Error: 404 (video likely deleted)")
             # Log all other errors generically
-            else: 
+            else:
                 print(f"Error: {e}")
 
             await message.remove_reaction(emojis["wait_emoji"], client.user)
             await message.add_reaction(emojis["error_emoji"])
+
 
 async def handle_link(message: discord.Message):
     await message.add_reaction(emojis["wait_emoji"])
@@ -224,13 +225,13 @@ async def on_message(message: discord.Message):
     if message.author.bot:
         return
 
-    # If the message has "-ns" (No Scan), don't do anything. 
+    # If the message has "-ns" (No Scan), don't do anything.
     # This way people can link a video and not have it embedded.
     elif "-ns" in message.content:
         print("Avoiding message")
         return
 
-    # If the message has "-rs" (Rescan), 
+    # If the message has "-rs" (Rescan),
     # rehandle previous messages as specified by the user or 25 by default
     elif "-rs" in message.content:
         print("Handling rescan")
@@ -240,7 +241,7 @@ async def on_message(message: discord.Message):
     elif "tiktok.com" in message.content:
         print(f"Handling link: {message.content}")
         await handle_link(message)
-        
+
 
 # Run the bot with your token
 client.run(settings["token"])
