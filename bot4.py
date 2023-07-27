@@ -15,8 +15,8 @@ client = discord.Client(intents=intents)
 
 # Emoji names
 emojis = {"wait_emoji": "⌛", "too_large_emoji": "📦", "error_emoji": "❌"}
-dir = "downloads/"
-version = "4.1.0"
+dir = "downloads/"  # The folder where the videos and photos will be downloaded
+version = "4.1.1"  # The version of the bot
 
 
 @client.event
@@ -237,4 +237,4 @@ async def on_message(message: discord.Message):
 
 
 # Run the bot with your token
-client.run(os.getenv("token"))
+client.run(os.getenv("TOKEN"))
