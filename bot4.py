@@ -13,13 +13,6 @@ intents = discord.Intents.all()
 client = discord.Client(intents=intents)
 
 
-def read_settings():
-    with open("settings.json") as f:
-        return json.load(f)
-
-
-settings = read_settings()
-
 # Emoji names
 emojis = {"wait_emoji": "⌛", "too_large_emoji": "📦", "error_emoji": "❌"}
 dir = "downloads/"
@@ -244,4 +237,4 @@ async def on_message(message: discord.Message):
 
 
 # Run the bot with your token
-client.run(settings["token"])
+client.run(os.getenv("token"))
