@@ -1,3 +1,4 @@
+from settings import *  # Import all settings from settings.py
 import asyncio  # For the sleep function
 import json  # For reading the settings file
 import os  # For creating directories and deleting files
@@ -11,12 +12,6 @@ from ffmpeg.asyncio import FFmpeg
 # Create a bot instance
 intents = discord.Intents.all()
 client = discord.Client(intents=intents)
-
-
-# Emoji names
-emojis = {"wait_emoji": "⌛", "too_large_emoji": "📦", "error_emoji": "❌"}
-download_dir = "downloads/"  # The folder where the videos and photos will be downloaded
-version = "4.1.1"  # The version of the bot
 
 
 @client.event
@@ -137,7 +132,7 @@ async def handle_video(message, parent_folder: str):
                     {"codec:v": "libx264", "codec:a": "copy"},
                     # vf="scale=1280:-1",
                     preset="medium",  # Valid presets are ultrafast, superfast, veryfast, faster, fast, medium, slow, slower, and veryslow
-                    crf=23,  # 0 is lossless, 51 is worst quality
+                    crf=compression,  # 0 is lossless, 51 is worst quality
                 )
             )
 
@@ -198,9 +193,11 @@ async def handle_link(message: discord.Message):
 
 
 async def handle_rescan(message: discord.Message):
-    # Get count of messages to scrape (default 25 + the -rs message itself makes 26)
     components = message.content.split(" ")
-    count = (25 if len(components) == 1 else int(components[1])) + 1
+    # Use default_rs_count if no number is specified
+    count = default_rs_count if len(components) == 1 else int(components[1])
+    # Add one to the count to account for the rs command itself
+    count += 1
 
     # Get messages from channel
     history = message.channel.history(limit=count)
@@ -218,15 +215,15 @@ async def on_message(message: discord.Message):
     if message.author.bot:
         return
 
-    # If the message has "-ns" (No Scan), don't do anything.
+    # If the message has "{prefix}ns" (No Scan), don't do anything.
     # This way people can link a video and not have it embedded.
-    elif "-ns" in message.content:
+    elif f"{prefix}ns" in message.content:
         print("Avoiding message")
         return
 
-    # If the message has "-rs" (Rescan),
+    # If the message has "{prefix}rs" (Rescan),
     # rehandle previous messages as specified by the user or 25 by default
-    elif "-rs" in message.content:
+    elif f"{prefix}rs" in message.content:
         print("Handling rescan")
         await handle_rescan(message)
 
