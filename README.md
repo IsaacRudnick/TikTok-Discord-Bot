@@ -17,7 +17,7 @@ Automatically replaces TikTok links with their embedded content (e.g. videos, im
 - Build the docker image
   - `docker build -t tiktok-bot .`
 - Run the docker image
-  - `docker run -d --name tiktok-bot tiktok-bot`
+  - `docker run --env-file .env -d --name tiktok-bot tiktok-bot`
 - Send a TikTok link in a Discord channel that the bot has access to
 - The bot is now running and will automatically replace the link with the embedded content
 

@@ -1,13 +1,14 @@
 from settings import *  # Import all settings from settings.py
 import asyncio  # For the sleep function
-import json  # For reading the settings file
-import os  # For creating directories and deleting files
 import shutil  # For deleting directories with files in them
 import re  # For finding the photo URLs in the TikTok HTML
 import discord  # For the bot
 import requests  # For downloading the TikTok HTML
 from yt_dlp import YoutubeDL  # For downloading the TikTok video
 from ffmpeg.asyncio import FFmpeg
+import os  # For creating directories and deleting files
+from dotenv import load_dotenv  # For loading the .env file
+load_dotenv()  # Load the .env file
 
 # Create a bot instance
 intents = discord.Intents.all()
@@ -231,7 +232,6 @@ async def on_message(message: discord.Message):
     elif "tiktok.com" in message.content:
         print(f"Handling link: {message.content}")
         await handle_link(message)
-
 
 # Run the bot with your token
 client.run(os.getenv("TOKEN"))
