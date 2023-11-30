@@ -11,9 +11,9 @@ from dotenv import load_dotenv  # For loading the .env file
 load_dotenv()  # Load the .env file
 
 # Workaround to get yt-dlp binary
-importer = zipimport.zipimporter('yt_dlp.zip')
-yt_dlp = importer.load_module('yt_dlp')
-YoutubeDL = yt_dlp.YoutubeDL
+importer = zipimport.zipimporter('binaries/yt__dlp.zip')
+yt__dlp = importer.load_module('yt_dlp')
+YoutubeDL = yt__dlp.YoutubeDL
 
 # Create a bot instance
 intents = discord.Intents.all()
