@@ -12,4 +12,4 @@ emojis = {"wait_emoji": "⌛", "too_large_emoji": "📦", "error_emoji": "❌"}
 # The folder where the videos and photos will be downloaded
 download_dir = "downloads/"
 # ===============================
-version = "4.1.2"  # The version of the bot. Only used for printing to console.
+version = "4.1.3"  # The version of the bot. Only used for printing to console.
