@@ -1,19 +1,14 @@
-import zipimport
 from settings import *  # Import all settings from settings.py
 import asyncio  # For the sleep function
 import shutil  # For deleting directories with files in them
 import re  # For finding the photo URLs in the TikTok HTML
 import discord  # For the bot
 import requests  # For downloading the TikTok HTML
+from yt_dlp import YoutubeDL  # For downloading the TikTok video
 from ffmpeg.asyncio import FFmpeg
 import os  # For creating directories and deleting files
 from dotenv import load_dotenv  # For loading the .env file
 load_dotenv()  # Load the .env file
-
-# Workaround to get yt-dlp binary
-importer = zipimport.zipimporter('binaries/yt__dlp.zip')
-yt__dlp = importer.load_module('yt_dlp')
-YoutubeDL = yt__dlp.YoutubeDL
 
 # Create a bot instance
 intents = discord.Intents.all()
