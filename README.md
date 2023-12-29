@@ -1,3 +1,7 @@
+# DEPRECATED - SEE [V2](https://github.com/InformationlessUsername/TikTok-Discord-Bot-2)
+
+Due to compatibility issues, this project has been reworked as noted above. This version (v1) is still semi-functional, but not consistent because of TikTok's continually-changing web-request handling. 
+
 # TikTok Discord Bot
 
 Automatically replaces TikTok links with their embedded content (e.g. videos, images)
